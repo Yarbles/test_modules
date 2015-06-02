@@ -1,0 +1,30 @@
+<?php
+
+class SimpletestCollatz extends DrupalUnitTestCase {
+
+    public static function getInfo() {
+        return array(
+            'name' => 'Collatz Test',
+            'description' => 'Simpletest unit test for Collatz module',
+            'group' => 'Epicodus Examples',
+        );
+    }
+
+    function test_collatz_logic_input_one() {
+        $input = 1;
+        $result = collatz_logic($input);
+        $this->assertEqual($result, [1]);
+    }
+
+    function test_collatz_logic_input_two() {
+        $input = 2;
+        $result = collatz_logic($input);
+        $this->assertEqual($result, [2, 1]);
+    }
+
+    function test_collatz_logic_input_n() {
+        $input = 15;
+        $result = collatz_logic($input);
+        $this->assertEqual($result, [15, 46, 23, 70, 35, 106, 53, 160, 80, 40, 20, 10, 5, 16, 8, 4, 2, 1]);
+    }
+}

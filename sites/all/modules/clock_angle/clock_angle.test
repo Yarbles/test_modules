@@ -1,0 +1,16 @@
+<?php
+class SimpletestClockAngle extends DrupalUnitTestCase {
+    public static function getInfo() {
+        return array(
+            'name' => 'Clock Angle unit tests',
+            'description' => 'Test that clock_angle module works like WHOA.',
+            'group' => 'Epicodus Examples',
+        );
+    }
+
+    function test_clock_angle_logic() {
+        $input = [12, 30];
+        $result = clock_angle_logic($input);
+        $this->assertEqual($result, 165);
+    }
+}

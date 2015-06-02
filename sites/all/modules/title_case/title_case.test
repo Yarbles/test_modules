@@ -1,0 +1,24 @@
+<?php
+
+class SimpletestTitleCase extends DrupalUnitTestCase {
+
+    public static function getInfo() {
+        return array(
+            'name' => 'Title Case Test',
+            'description' => 'Simpletest unit test for Title Case module',
+            'group' => 'Epicodus Examples',
+        );
+    }
+
+    function test_title_case_logic_one_word() {
+        $result = title_case_logic('snorkel');
+        $message = 'An inputed string will return title cased';
+        $this->assertEqual($result, 'Snorkel', $message);
+    }
+
+    function test_title_case_logic_realworld_title() {
+        $result = title_case_logic('the old man and the sea');
+        $message = 'An inputed string will return title cased';
+        $this->assertEqual($result, 'The Old Man and the Sea', $message);
+    }
+}

@@ -1,0 +1,60 @@
+<?php
+
+function collatz_logic($n, $temp = []) {
+    array_push($temp, $n);
+    $last = count($temp) - 1;
+    if ($last >= 0 && $temp[$last] == 1) {
+        return $temp;
+    } else if ($n % 2 == 0) {
+        return collatz_logic($n / 2, $temp);
+    } else {
+        return collatz_logic($n * 3 + 1, $temp);
+    }
+}
+
+function collatz_menu() {
+    $items['collatz'] = array(
+        'title' => 'Collatz Whatsit!',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('collatz_form'),
+        'access callback' => TRUE,
+        'type' =>  MENU_NORMAL_ITEM,
+    );
+    $items['collatz_results'] = array(
+        'title' => 'Numbers!!1!',
+        'page callback' => 'collatz_results_page',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function collatz_form() {
+    $form['collatz_input'] = array(
+        '#title' => 'user_input',
+        '#type' => 'textfield',
+        '#description' => 'Number, plz',
+        '#element_validate' => array('element_validate_integer_positive'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'gimme!',
+    );
+    return $form;
+}
+
+function collatz_form_submit($form, &$form_state) {
+    $input = $form_state['values']['collatz_input'];
+    $input = collatz_logic($input);
+
+    $_SESSION['collatz_output'] = $input;
+    $form_state['redirect'] = 'collatz_results';
+}
+
+function collatz_results_page() {
+    $result = $_SESSION['collatz_output'];
+    $count = count($result);
+    $result = implode(", ", $result);
+    return "<p>$result</p>
+            <p>Calculated in $count steps.</p>";
+}

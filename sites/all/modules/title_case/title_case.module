@@ -32,24 +32,29 @@ function title_case_form() {
 }
 
 function title_case_form_submit($form, &$form_state) {
-        $except = ['the', 'of', 'and', 'with', 'a', 'for', 'is', 'an', 'in', 'on', 'to'];
-        $format_input = strtolower($form_state['values']['user_input']);
-        $input_array = explode(" ", $format_input);
-        $output = [ucfirst(array_splice($input_array, 0, 1)[0])];
-        foreach ($input_array as $item) {
-            if (!in_array($item, $except)) {
-                array_push($output, ucfirst($item));
-            } else {
-                array_push($output, $item);
-            }
+    $input = strtolower($form_state['values']['user_input']);
+    $output = title_case_logic($input);
+
+    $_SESSION['title_output'] = $output;
+    $form_state['redirect'] = 'title_case_results';
+}
+
+function title_case_logic($input) {
+    $except = ['the', 'of', 'and', 'with', 'a', 'for', 'is', 'an', 'in', 'on', 'to'];
+
+    $input_array = explode(" ", $input);
+    $output = [ucfirst(array_splice($input_array, 0, 1)[0])];
+    foreach ($input_array as $item) {
+        if (!in_array($item, $except)) {
+            array_push($output, ucfirst($item));
+        } else {
+            array_push($output, $item);
         }
-            $output = implode(" ", $output);
-
-            $_SESSION['title_output'] = $output;
-            $form_state['redirect'] = 'title_case_results';
     }
+    return implode(" ", $output);
+}
 
-    function title_case_results_page() {
-        $titlecased = $_SESSION['title_output'];
-        return '<p>Here\'s yer stinkin\' title, pal: ' . "  " . $titlecased . '</p>';
-    }
+function title_case_results_page() {
+    $titlecased = $_SESSION['title_output'];
+    return '<p>Here\'s yer stinkin\' title, pal: ' . "  " . $titlecased . '</p>';
+}

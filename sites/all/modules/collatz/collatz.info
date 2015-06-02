@@ -1,0 +1,7 @@
+name = Collatz Sequence
+description = Generate Collatz Sequence from user input
+package = Epicodus Examples
+core = 7.x
+files[] = collatz.module
+files[] = collatz.test
+dependencies[] = simpletest
