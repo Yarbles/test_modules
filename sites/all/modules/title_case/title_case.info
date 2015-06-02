@@ -1,0 +1,7 @@
+name = Title Case
+description = Make a string title case
+package = Epicodus Examples
+core = 7.x
+files[] = title_case.module
+files[] = title_case.test
+dependencies[] = simpletest

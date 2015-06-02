@@ -1,0 +1,55 @@
+<?php
+
+function title_case_menu() {
+    $items['title_case'] = array(
+        'title' => 'Title Case!',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('title_case_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+
+    $items['title_case_results'] = array(
+        'title' => 'You did a thing!',
+        'page callback' => 'title_case_results_page',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function title_case_form() {
+    $form['user_input'] = array(
+        '#title' => 'input',
+        '#type' => 'textfield',
+        '#description' => t('Gimme string for title case rofl'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Title Case?',
+    );
+    return $form;
+}
+
+function title_case_form_submit($form, &$form_state) {
+        $except = ['the', 'of', 'and', 'with', 'a', 'for', 'is', 'an', 'in', 'on', 'to'];
+        $format_input = strtolower($form_state['values']['user_input']);
+        $input_array = explode(" ", $format_input);
+        $output = [ucfirst(array_splice($input_array, 0, 1)[0])];
+        foreach ($input_array as $item) {
+            if (!in_array($item, $except)) {
+                array_push($output, ucfirst($item));
+            } else {
+                array_push($output, $item);
+            }
+        }
+            $output = implode(" ", $output);
+
+            $_SESSION['title_output'] = $output;
+            $form_state['redirect'] = 'title_case_results';
+    }
+
+    function title_case_results_page() {
+        $titlecased = $_SESSION['title_output'];
+        return '<p>Here\'s yer stinkin\' title, pal: ' . "  " . $titlecased . '</p>';
+    }
